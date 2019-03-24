@@ -1,0 +1,13 @@
+# Copyright (c) 2019 Antoine Tran Tan
+
+# Commande a taper (dans le dossier de build) pour setup OpenCV en Debug :
+# conan install .. -s build_type=Debug
+
+# Commande a taper (dans le dossier de build) pour setup OpenCV en Release :
+# conan install .. -s build_type=Release
+
+[requires]
+opencv/4.0.1@conan/stable
+
+[generators]
+cmake
