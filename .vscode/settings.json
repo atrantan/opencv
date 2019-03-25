@@ -63,5 +63,11 @@
         "xstring": "cpp",
         "xtr1common": "cpp",
         "xutility": "cpp"
-    }
+    },
+    // The preferred CMake generator(s) to use when configuring (tried in order of listing)
+    "cmake.preferredGenerators": [
+        "Visual Studio 15 2017 Win64",
+        "Ninja",
+        "Unix Makefiles"
+    ]
 }
