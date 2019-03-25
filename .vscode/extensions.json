@@ -2,6 +2,7 @@
     "recommendations": [
         "ms-vscode.cpptools",
         "twxs.cmake",
-        "vector-of-bool.cmake-tools"
+        "vector-of-bool.cmake-tools",
+        "ms-ceintl.vscode-language-pack-fr"
     ]
 }
