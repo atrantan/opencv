@@ -69,5 +69,6 @@
         "Visual Studio 15 2017 Win64",
         "Ninja",
         "Unix Makefiles"
-    ]
+    ],
+    "cmake.generator": "Visual Studio 15 2017 Win64"
 }
