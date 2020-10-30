@@ -66,9 +66,8 @@
     },
     // The preferred CMake generator(s) to use when configuring (tried in order of listing)
     "cmake.preferredGenerators": [
-        "Visual Studio 15 2017 Win64",
         "Ninja",
         "Unix Makefiles"
     ],
-    "cmake.generator": "Visual Studio 15 2017 Win64"
+    "cmake.configureOnOpen": false
 }

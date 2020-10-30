@@ -1,10 +1,10 @@
 # Copyright (c) 2019 Antoine Tran Tan
 
-cmake_minimum_required (VERSION 3.8)
+cmake_minimum_required (VERSION 3.7.2)
 project ("TP_OpenCV")
 
 # Utilisation au minimum de C++14
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Setup de Conan

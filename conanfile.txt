@@ -7,7 +7,7 @@
 # conan install .. -s build_type=Release
 
 [requires]
-opencv/4.0.1@conan/stable
+opencv/4.3.0@conan/stable
 
 [generators]
 cmake

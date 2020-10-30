@@ -13,7 +13,7 @@ int main( int argc, char** argv )
     }
 
     cv::Mat image;
-    image = cv::imread(argv[1], cv::IMREAD_COLOR); // Read the file
+    // image = cv::imread(argv[1], cv::IMREAD_COLOR); // Read the file
 
     if( image.empty() ) // Check for invalid input
     {
@@ -21,8 +21,8 @@ int main( int argc, char** argv )
         return -1;
     }
 
-    cv::namedWindow( "Display window", cv::WINDOW_AUTOSIZE ); // Create a window for display.
-    cv::imshow( "Display window", image ); // Show our image inside it.
+    // cv::namedWindow( "Display window", cv::WINDOW_AUTOSIZE ); // Create a window for display.
+    // cv::imshow( "Display window", image ); // Show our image inside it.
 
     cv::waitKey(0); // Wait for a keystroke in the window
     return 0;
