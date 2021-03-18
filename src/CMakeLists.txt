@@ -1,15 +1,24 @@
-# Copyright (c) 2019 Antoine Tran Tan
-
-cmake_minimum_required(VERSION 3.8)
-
 file(GLOB_RECURSE sources
+    "*.c"
     "*.cpp"
 )
 
 add_executable(my_exe ${sources})
 
-target_link_libraries(my_exe ${CONAN_LIBS})
+# Link to math library if compiler is gnu
+if ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+    list(APPEND libraries m)
+endif()
 
-add_custom_command(TARGET my_exe PRE_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/docs ${CMAKE_CURRENT_BINARY_DIR})
+# Link to user libraries (if there are any)
+if(libraries)
+    target_link_libraries(my_exe ${libraries})
+endif()
+
+target_link_libraries(my_exe ${OpenCV_LIBS})
+
+install( TARGETS my_exe
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+)
