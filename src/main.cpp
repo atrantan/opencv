@@ -134,7 +134,7 @@ std::vector<cv::Point> detectAndDisplay(cv::Mat frame)
 
     cv::putText(
         frame,
-        "Taper 'y' si les 2 yeux sont bien detectees", 
+        "Taper 'y' si les 2 yeux sont bien detectes", 
         cv::Point(10,50),
         cv::FONT_HERSHEY_SIMPLEX,
         1, 
