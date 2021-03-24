@@ -19,11 +19,32 @@ int main()
     // Generate .csv file
     {
         // Output file
-        std::ofstream ostrm("my_csv_file.csv", std::ios_base::out);
+        std::ofstream ostrm("training_set_list.csv", std::ios_base::out);
 
         int label = 0;
 
-        fs::path path = fs::current_path() / "examples";
+        fs::path path = fs::current_path() / "training_set";
+
+        for (auto &&p : fs::directory_iterator(path))
+        {
+            for (auto &&q : fs::directory_iterator(p))
+            {
+                std::string entry = q.path().string() + ";" + std::to_string(label) + "\n";
+                std::replace(entry.begin(), entry.end(), '\\', '/');
+                ostrm << entry;
+            }
+            label++;
+        }
+    }
+
+    // Generate .csv file
+    {
+        // Output file
+        std::ofstream ostrm("test_set_list.csv", std::ios_base::out);
+
+        int label = 0;
+
+        fs::path path = fs::current_path() / "test_set";
 
         for (auto &&p : fs::directory_iterator(path))
         {
@@ -39,10 +60,18 @@ int main()
 
     {
         // Get the path to your CSV.
-        std::string fn_csv = "my_csv_file.csv";
+        std::string fn_csv = "training_set_list.csv";
         // These vectors hold the images and corresponding labels.
         std::vector<cv::Mat> images;
         std::vector<int> labels;
+
+
+        // Get the path to your CSV.
+        std::string fn_csv_t = "test_set_list.csv";
+        // These vectors hold the images and corresponding labels.
+        std::vector<cv::Mat> images_t;
+        std::vector<int> labels_t;
+
         // Read in the data. This can fail if no valid
         // input filename is given.
         try
@@ -55,21 +84,34 @@ int main()
             // nothing more we can do
             exit(1);
         }
+
+        // Read in the data. This can fail if no valid
+        // input filename is given.
+        try
+        {
+            read_csv(fn_csv_t, images_t, labels_t);
+        }
+        catch (const cv::Exception &e)
+        {
+            std::cerr << "Error opening file \"" << fn_csv_t << "\". Reason: " << e.msg << std::endl;
+            // nothing more we can do
+            exit(1);
+        }
+
         // Quit if there are not enough images for this demo.
         if (images.size() <= 1)
         {
-            std::string error_message = "This demo needs at least 2 images to work. Please add more images to your data set!";
+            std::string error_message = "This demo needs at least 2 images in training set to work. Please add more images to your data set!";
             ::CV_Error(cv::Error::Code::StsError, error_message);
         }
-        // The following lines simply get the last images from
-        // your dataset and remove it from the vector. This is
-        // done, so that the training data (which we learn the
-        // cv::face::LBPHFaceRecognizer on) and the test data we test
-        // the model with, do not overlap.
-        cv::Mat testSample = images[images.size() - 1];
-        int testLabel = labels[labels.size() - 1];
-        images.pop_back();
-        labels.pop_back();
+
+        // Quit if there are not enough images for this demo.
+        if (images_t.size() <= 1)
+        {
+            std::string error_message = "This demo needs at least 2 images in test set to work. Please add more images to your data set!";
+            ::CV_Error(cv::Error::Code::StsError, error_message);
+        }
+
         // The following lines create an LBPH model for
         // face recognition and train it with the images and
         // labels read from the given CSV file.
@@ -94,48 +136,27 @@ int main()
         //
         cv::Ptr<cv::face::LBPHFaceRecognizer> model = cv::face::LBPHFaceRecognizer::create();
         model->train(images, labels);
-        // The following line predicts the label of a given
-        // test image:
-        int predictedLabel = model->predict(testSample);
-        //
-        // To get the confidence of a prediction call the model with:
-        //
-        //      int predictedLabel = -1;
-        //      double confidence = 0.0;
-        //      model->predict(testSample, predictedLabel, confidence);
-        //
-        std::string result_message = 
-            cv::format("Predicted class = %d / Actual class = %d.", predictedLabel, testLabel);
 
-        std::cout << result_message << std::endl;
-        // First we'll use it to set the threshold of the LBPHFaceRecognizer
-        // to 0.0 without retraining the model. This can be useful if
-        // you are evaluating the model:
-        //
-        model->setThreshold(0.0);
-        // Now the threshold of this model is set to 0.0. A prediction
-        // now returns -1, as it's impossible to have a distance below
-        // it
-        predictedLabel = model->predict(testSample);
-        std::cout << "Predicted class = " << predictedLabel << std::endl;
-        // Show some informations about the model, as there's no cool
-        // Model data to display as in Eigenfaces/Fisherfaces.
-        // Due to efficiency reasons the LBP images are not stored
-        // within the model:
-        std::cout << "Model Information:" << std::endl;
-        std::string model_info = 
-            cv::format(
-                "\tLBPH(radius=%i, neighbors=%i, grid_x=%i, grid_y=%i, threshold=%.2f)",
-                model->getRadius(),
-                model->getNeighbors(),
-                model->getGridX(),
-                model->getGridY(),
-                model->getThreshold());
-        std::cout << model_info << std::endl;
-        // We could get the histograms for example:
-        std::vector<cv::Mat> histograms = model->getHistograms();
-        // But should I really visualize it? Probably the length is interesting:
-        std::cout << "Size of the histograms: " << histograms[0].total() << std::endl;
+        // The following line predicts the label of given
+        // test images:
+        for(int i=0; i<images_t.size(); i++ )
+        {
+            cv::Mat testSample = images_t[i];
+            int testLabel = labels_t[i];
+
+            int predictedLabel = model->predict(testSample);
+            //
+            // To get the confidence of a prediction call the model with:
+            //
+            //      int predictedLabel = -1;
+            //      double confidence = 0.0;
+            //      model->predict(testSample, predictedLabel, confidence);
+            //
+            std::string result_message = 
+                cv::format("Predicted class = %d / Actual class = %d.", predictedLabel, testLabel);
+
+            std::cout << result_message << std::endl;
+        }
     }
 
     return 0;
