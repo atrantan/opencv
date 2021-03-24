@@ -1,5 +1,5 @@
 {
     "cmake.environment": {
-        "OpenCV_DIR": "c:/Users/antoi/Desktop/opencv/build/install"
+        "OpenCV_DIR": "c:/LogicielsGE1/opencv/build/install"
     }
 }
