@@ -149,5 +149,5 @@ for i in range(len(images)):
         output_path = "test_set/s" + str(indexes[i]) + "/" + os.path.basename(images[i])
 
     CropFace(image, eye_left=(left_x[i], left_y[i]), eye_right=(right_x[i], right_y[i]), offset_pct=(
-        0.3, 0.3), dest_sz=(200, 200)).save(output_path)
+        0.2, 0.2), dest_sz=(200, 200)).save(output_path)
  
