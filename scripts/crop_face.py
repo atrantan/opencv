@@ -122,13 +122,32 @@ if __name__ == "__main__":
     [images, indexes, left_x, left_y, right_x, right_y] = readFileNames()
 if not os.path.exists("training_set"):
     os.makedirs("training_set")
+if not os.path.exists("test_set"):
+    os.makedirs("test_set")
+
+test_set_treshhold = 7
+label_counters = dict()
+
 for i in range(len(images)):
     subdir = "training_set/s" + str(indexes[i])
     if not os.path.exists( subdir ):
         os.makedirs(subdir)
+    subdir = "test_set/s" + str(indexes[i])
+    if not os.path.exists( subdir ):
+        os.makedirs(subdir)
+
+    if str(indexes[i]) in label_counters:
+        label_counters[str(indexes[i])] = label_counters[str(indexes[i])] + 1
+    else:
+        label_counters[str(indexes[i])] = 1
 
     image = Image.open(images[i])
 
+    if label_counters[str(indexes[i])] <= test_set_treshhold :
+        output_path = "training_set/s" + str(indexes[i]) + "/" + os.path.basename(images[i])
+    else:
+        output_path = "test_set/s" + str(indexes[i]) + "/" + os.path.basename(images[i])
+
     CropFace(image, eye_left=(left_x[i], left_y[i]), eye_right=(right_x[i], right_y[i]), offset_pct=(
-        0.3, 0.3), dest_sz=(200, 200)).save("training_set/s" + str(indexes[i]) + "/" + os.path.basename(images[i]))
+        0.3, 0.3), dest_sz=(200, 200)).save(output_path)
  
