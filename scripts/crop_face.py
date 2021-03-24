@@ -120,15 +120,15 @@ def readFileNames():
 
 if __name__ == "__main__":
     [images, indexes, left_x, left_y, right_x, right_y] = readFileNames()
-if not os.path.exists("examples"):
-    os.makedirs("examples")
+if not os.path.exists("training_set"):
+    os.makedirs("training_set")
 for i in range(len(images)):
-    subdir = "examples/s" + str(indexes[i])
+    subdir = "training_set/s" + str(indexes[i])
     if not os.path.exists( subdir ):
         os.makedirs(subdir)
 
     image = Image.open(images[i])
 
     CropFace(image, eye_left=(left_x[i], left_y[i]), eye_right=(right_x[i], right_y[i]), offset_pct=(
-        0.3, 0.3), dest_sz=(200, 200)).save("examples/s" + str(indexes[i]) + "/" + os.path.basename(images[i]))
+        0.3, 0.3), dest_sz=(200, 200)).save("training_set/s" + str(indexes[i]) + "/" + os.path.basename(images[i]))
  
