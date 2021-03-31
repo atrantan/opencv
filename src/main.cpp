@@ -60,27 +60,27 @@ int main()
 
     {
         // Get the path to your CSV.
-        std::string fn_csv = "training_set_list.csv";
+        std::string fn_csv_a = "training_set_list.csv";
         // These vectors hold the images and corresponding labels.
-        std::vector<cv::Mat> images;
-        std::vector<int> labels;
+        std::vector<cv::Mat> images_a;
+        std::vector<int> labels_a;
 
 
         // Get the path to your CSV.
-        std::string fn_csv_t = "test_set_list.csv";
+        std::string fn_csv_b = "test_set_list.csv";
         // These vectors hold the images and corresponding labels.
-        std::vector<cv::Mat> images_t;
-        std::vector<int> labels_t;
+        std::vector<cv::Mat> images_b;
+        std::vector<int> labels_b;
 
         // Read in the data. This can fail if no valid
         // input filename is given.
         try
         {
-            read_csv(fn_csv, images, labels);
+            read_csv(fn_csv_a, images_a, labels_a);
         }
         catch (const cv::Exception &e)
         {
-            std::cerr << "Error opening file \"" << fn_csv << "\". Reason: " << e.msg << std::endl;
+            std::cerr << "Error opening file \"" << fn_csv_a << "\". Reason: " << e.msg << std::endl;
             // nothing more we can do
             exit(1);
         }
@@ -89,24 +89,24 @@ int main()
         // input filename is given.
         try
         {
-            read_csv(fn_csv_t, images_t, labels_t);
+            read_csv(fn_csv_b, images_b, labels_b);
         }
         catch (const cv::Exception &e)
         {
-            std::cerr << "Error opening file \"" << fn_csv_t << "\". Reason: " << e.msg << std::endl;
+            std::cerr << "Error opening file \"" << fn_csv_b << "\". Reason: " << e.msg << std::endl;
             // nothing more we can do
             exit(1);
         }
 
         // Quit if there are not enough images for this demo.
-        if (images.size() <= 1)
+        if (images_a.size() <= 1)
         {
             std::string error_message = "This demo needs at least 2 images in training set to work. Please add more images to your data set!";
             ::CV_Error(cv::Error::Code::StsError, error_message);
         }
 
         // Quit if there are not enough images for this demo.
-        if (images_t.size() <= 1)
+        if (images_b.size() <= 1)
         {
             std::string error_message = "This demo needs at least 2 images in test set to work. Please add more images to your data set!";
             ::CV_Error(cv::Error::Code::StsError, error_message);
@@ -135,14 +135,14 @@ int main()
         //      cv::face::LBPHFaceRecognizer::create(1,8,8,8,123.0)
         //
         cv::Ptr<cv::face::LBPHFaceRecognizer> model = cv::face::LBPHFaceRecognizer::create();
-        model->train(images, labels);
+        model->train(images_a, labels_a);
 
         // The following line predicts the label of given
         // test images:
-        for(int i=0; i<images_t.size(); i++ )
+        for(int i=0; i<images_b.size(); i++ )
         {
-            cv::Mat testSample = images_t[i];
-            int testLabel = labels_t[i];
+            cv::Mat testSample = images_b[i];
+            int testLabel = labels_b[i];
 
             int predictedLabel = model->predict(testSample);
             //
