@@ -132,10 +132,22 @@ std::vector<cv::Point> detectAndDisplay(cv::Mat frame)
         }
     }
 
+    float ratio =
+        (frame.size[0] > frame.size[1])
+            ? (1024.0f / static_cast<float>(frame.size[0]))
+            : (1280.0f / static_cast<float>(frame.size[1]));
+
+    cv::resize(
+        frame, 
+        frame, 
+        cv::Size2f(
+            static_cast<float>(frame.size[1]) * ratio, 
+            static_cast<float>(frame.size[0]) * ratio));
+
     cv::putText(
         frame,
         "Taper 'y' si les 2 yeux sont bien detectes", 
-        cv::Point(10,50),
+        cv::Point(10, 50),
         cv::FONT_HERSHEY_SIMPLEX,
         1, 
         cv::Scalar(209, 80, 0, 255),
@@ -144,7 +156,7 @@ std::vector<cv::Point> detectAndDisplay(cv::Mat frame)
     cv::putText(
         frame,
         "Taper 'n' dans le cas contraire", 
-        cv::Point(10,90),
+        cv::Point(10, 90),
         cv::FONT_HERSHEY_SIMPLEX,
         1, 
         cv::Scalar(209, 80, 0, 255),
